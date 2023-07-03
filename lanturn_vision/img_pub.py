@@ -1,6 +1,11 @@
+# ROS
 import rclpy
 from rclpy.node import Node
+
+# ROS Messages
 from sensor_msgs.msg import Image
+
+# OpenCV
 from cv_bridge import CvBridge
 import cv2
 
@@ -11,28 +16,28 @@ class ImagePublisher(Node):
     Publishes video frames from the webcam to a ROS topic.
     """
 
-    def __init__(self):
+    def __init__(self, node_name="img_pub", device_index=0, topic_name="video_frames"):
         """
         Class constructor to set up the node
         """
-        # TODO: Set the node name with a custom name.
-        super().__init__("image_publisher")
+        self.node_name = node_name
+        self.device_index = device_index
+        self.topic_name = topic_name
+
+        super().__init__(self.node_name)
 
         # Publisher for video_frames topic with queue size 10
-        # TODO: Set the topic name with a custom name.
-        #   queue_size should probably be 1
-        #   set qos_profile
-        self.publisher_ = self.create_publisher(Image, "video_frames", 10)
+        # TODO: Set qos_profile
+        self.publisher_ = self.create_publisher(Image, self.topic_name, 1)
 
-        # TODO: Minimize the delay between the published messages.
+        # How fast to publish messages.
         timer_period = 0.025  # seconds
 
         # Create the timer
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
         # Create a VideoCapture object
-        # TODO: Set variable for custom camera device index
-        self.cap = cv2.VideoCapture(0)
+        self.cap = cv2.VideoCapture(self.device_index)
 
         # Used to convert between ROS and OpenCV images
         self.br = CvBridge()
@@ -48,10 +53,10 @@ class ImagePublisher(Node):
         # Capture frame-by-frame
         ret, frame = self.cap.read()
 
-        # Calculate fps
-        fps = 1 / (self.curr_time - self.prev_time) * 1e9
-        self.prev_time = self.curr_time
+        # Calculate FPS
         self.curr_time = self.get_clock().now().nanoseconds
+        fps = 1e9 / (self.curr_time - self.prev_time)
+        self.prev_time = self.curr_time
 
         if ret:
             # Publish the image.
@@ -67,7 +72,7 @@ def main(args=None):
     rclpy.init(args=args)
 
     # Create the node
-    image_publisher = ImagePublisher()
+    image_publisher = ImagePublisher(device_index=2)
 
     # Spin the node so the callback function is called.
     rclpy.spin(image_publisher)

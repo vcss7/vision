@@ -20,8 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'webcam_publisher = lanturn_vision.webcam_publisher:main',
-            'image_subscriber = lanturn_vision.image_subscriber:main',
+            'img_pub = lanturn_vision.img_pub:main',
+            'img_sub = lanturn_vision.img_sub:main',
         ],
     },
 )
