@@ -1,8 +1,16 @@
 # lanturn_vision
 The code for the computer vision software component of the RoboSub Lanturn 
 
-## Additional Files
-Additional files and images used for training can be found at: https://drive.google.com/drive/folders/1alqhudR5rR0ldaBuJxdLu2Jt8_rD8tVK?usp=sharing  
+- [ ] Calibrate camera instructions
+- [ ] Throw in Yolov7 shit
+- [ ] Start writing Yolov7 ROS Node
+
+## Additional Files 
+Files for Prequalification Objects [Google
+Drive](https://drive.google.com/drive/folders/1alqhudR5rR0ldaBuJxdLu2Jt8_rD8tVK?usp=sharing).
+
+[LabelIMG](https://github.com/heartexlabs/labelImg) - Program for labeling
+images
 
 ## Installation
 
